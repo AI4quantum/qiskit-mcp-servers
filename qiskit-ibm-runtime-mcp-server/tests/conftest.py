@@ -24,8 +24,8 @@ def mock_env_vars():
     with patch.dict(
         os.environ,
         {
-            "IBM_QUANTUM_TOKEN": "test_token_12345",
-            "IBM_QUANTUM_CHANNEL": "ibm_quantum_platform",
+            "QISKIT_IBM_TOKEN": "test_token_12345",
+            "QISKIT_IBM_CHANNEL": "ibm_quantum_platform",
         },
     ):
         yield

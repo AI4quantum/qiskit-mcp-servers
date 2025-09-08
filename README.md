@@ -60,7 +60,7 @@ uv run qiskit-ibm-runtime-mcp-server
 #### Environment Variables
 ```bash
 # For IBM Runtime Server
-export IBM_QUANTUM_TOKEN="your_ibm_quantum_token_here"
+export QISKIT_IBM_TOKEN="your_ibm_quantum_token_here"
 
 # For Code Assistant Server  
 export QISKIT_IBM_TOKEN="your_ibm_quantum_token_here"
