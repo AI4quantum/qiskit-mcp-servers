@@ -42,6 +42,8 @@ jobs:
     
     - name: Run tests for Code Assistant server
       working-directory: ./qiskit-code-assistant-mcp-server
+      env:
+          QISKIT_IBM_TOKEN: ${{ secrets.QISKIT_IBM_TOKEN }}
       run: |
         uv run pytest tests/ -v --cov=src --cov-report=xml --cov-report=term-missing
     
@@ -87,6 +89,8 @@ jobs:
     
     - name: Run tests for Runtime server
       working-directory: ./qiskit-ibm-runtime-mcp-server
+      env:
+          QISKIT_IBM_TOKEN: ${{ secrets.QISKIT_IBM_TOKEN }}
       run: |
         uv run pytest tests/ -v --cov=src --cov-report=xml --cov-report=term-missing
     
