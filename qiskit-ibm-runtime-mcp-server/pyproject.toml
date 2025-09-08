@@ -1,0 +1,58 @@
+[project]
+name = "qiskit-ibm-runtime-mcp-server"
+version = "0.1.0"
+description = "MCP server for IBM Quantum computing services through Qiskit IBM Runtime"
+readme = "README.md"
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "fastmcp>=2.8.1",
+    "qiskit-ibm-runtime>=0.40.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[[project.authors]]
+name = "Quantum+AI Team. IBM Quantum"
+email = "Quantum.Plus.AI@ibm.com"
+
+[project.license]
+text = "Apache-2.0"
+
+keywords = ["quantum", "qiskit", "ibm", "mcp", "ai", "quantum-computing"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+
+[project.urls]
+Homepage = "https://github.ibm.com/quantum-plus-ai/qiskit-ibm-runtime-mcp-server"
+Repository = "https://github.ibm.com/quantum-plus-ai/qiskit-ibm-runtime-mcp-server"
+Documentation = "https://github.ibm.com/quantum-plus-ai/qiskit-ibm-runtime-mcp-server#readme"
+"Bug Tracker" = "https://github.ibm.com/quantum-plus-ai/qiskit-ibm-runtime-mcp-server/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+qiskit-ibm-runtime-mcp-server = "qiskit_ibm_runtime_mcp_server:main"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.13",
+    "mypy>=1.15.0",
+]
+test = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.11.0",
+    "pytest-cov>=4.1.0",
+]
