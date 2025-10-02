@@ -33,10 +33,10 @@ classifiers = [
 
 
 [project.urls]
-Homepage = "https://github.ibm.com/quantum-plus-ai/qiskit-ibm-runtime-mcp-server"
-Repository = "https://github.ibm.com/quantum-plus-ai/qiskit-ibm-runtime-mcp-server"
-Documentation = "https://github.ibm.com/quantum-plus-ai/qiskit-ibm-runtime-mcp-server#readme"
-"Bug Tracker" = "https://github.ibm.com/quantum-plus-ai/qiskit-ibm-runtime-mcp-server/issues"
+Homepage = "https://github.com/AI4quantum/qiskit-mcp-servers"
+Repository = "https://github.com/AI4quantum/qiskit-mcp-servers"
+Documentation = "https://github.com/AI4quantum/qiskit-mcp-servers/tree/main/qiskit-ibm-runtime-mcp-server#readme"
+"Bug Tracker" = "https://github.com/AI4quantum/qiskit-mcp-servers/issues"
 
 [build-system]
 requires = ["hatchling"]
