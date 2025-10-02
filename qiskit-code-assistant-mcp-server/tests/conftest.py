@@ -6,7 +6,10 @@ from unittest.mock import patch
 import httpx
 import respx
 
-from mcp_qiskit_code_assistant.constants import QCA_TOOL_API_BASE, QCA_TOOL_MODEL_NAME
+from qiskit_code_assistant_mcp_server.constants import (
+    QCA_TOOL_API_BASE,
+    QCA_TOOL_MODEL_NAME,
+)
 
 
 @pytest.fixture

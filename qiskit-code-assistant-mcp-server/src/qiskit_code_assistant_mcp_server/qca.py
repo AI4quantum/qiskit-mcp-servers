@@ -1,12 +1,12 @@
 import logging
 from typing import Any, Dict
 
-from mcp_qiskit_code_assistant.constants import (
+from qiskit_code_assistant_mcp_server.constants import (
     QCA_TOOL_API_BASE,
     QCA_TOOL_MODEL_NAME,
     QCA_REQUEST_TIMEOUT,
 )
-from mcp_qiskit_code_assistant.utils import make_qca_request
+from qiskit_code_assistant_mcp_server.utils import make_qca_request
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-# mcp-qiskit-code-assistant
+# qiskit-code-assistant-mcp-server
 
 MCP server for Qiskit Code Assistant
 
@@ -47,7 +47,7 @@ This project uses [uv](https://astral.sh/uv) for virtual environments and depend
 ### Running the Server
 
 ```bash
-uv run mcp-qiskit-code-assistant
+uv run qiskit-code-assistant-mcp-server
 ```
 
 The server will start and listen for MCP connections.
@@ -68,7 +68,7 @@ The server will start and listen for MCP connections.
 1. Run the MCP Inspector:
 
     ```sh
-    npx @modelcontextprotocol/inspector uv run mcp-qiskit-code-assistant
+    npx @modelcontextprotocol/inspector uv run qiskit-code-assistant-mcp-server
     ```
 
 1. Open your browser to the URL shown in the console message e.g.,
@@ -132,4 +132,3 @@ The test suite covers:
 - [Qiskit Code Assistant](https://docs.quantum.ibm.com/guides/qiskit-code-assistant)
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
 - [MCP Inspector](https://github.com/modelcontextprotocol/inspector)
-- [BeeAI Framework](https://i-am-bee.github.io/beeai-framework/#/)

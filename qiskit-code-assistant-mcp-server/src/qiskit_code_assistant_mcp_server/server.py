@@ -15,12 +15,12 @@ import logging
 
 from fastmcp import FastMCP
 
-from mcp_qiskit_code_assistant.constants import (
+from qiskit_code_assistant_mcp_server.constants import (
     QCA_MCP_DEBUG_LEVEL,
     validate_configuration,
 )
-from mcp_qiskit_code_assistant.utils import close_http_client
-from mcp_qiskit_code_assistant.qca import (
+from qiskit_code_assistant_mcp_server.utils import close_http_client
+from qiskit_code_assistant_mcp_server.qca import (
     qca_accept_completion,
     qca_accept_model_disclaimer,
     qca_get_completion,
