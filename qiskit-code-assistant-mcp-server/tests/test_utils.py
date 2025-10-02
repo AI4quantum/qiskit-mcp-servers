@@ -42,7 +42,9 @@ class TestGetTokenFromSystem:
         """Test exception when no token is available."""
         with patch.dict("os.environ", {}, clear=True):
             with patch("pathlib.Path.exists", return_value=False):
-                from qiskit_code_assistant_mcp_server.utils import _get_token_from_system
+                from qiskit_code_assistant_mcp_server.utils import (
+                    _get_token_from_system,
+                )
 
                 with pytest.raises(Exception) as exc_info:
                     _get_token_from_system()

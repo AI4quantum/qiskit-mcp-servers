@@ -16,7 +16,8 @@ class TestValidateConfiguration:
             "https://valid-api.example.com",
         ):
             with patch(
-                "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_MODEL_NAME", "valid-model"
+                "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_MODEL_NAME",
+                "valid-model",
             ):
                 result = validate_configuration()
                 assert result is True
@@ -24,10 +25,12 @@ class TestValidateConfiguration:
     def test_validate_configuration_invalid_api_base(self):
         """Test validation with invalid API base URL."""
         with patch(
-            "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_API_BASE", "invalid-url"
+            "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_API_BASE",
+            "invalid-url",
         ):
             with patch(
-                "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_MODEL_NAME", "valid-model"
+                "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_MODEL_NAME",
+                "valid-model",
             ):
                 result = validate_configuration()
                 assert result is False
@@ -38,7 +41,9 @@ class TestValidateConfiguration:
             "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_API_BASE",
             "https://valid-api.example.com",
         ):
-            with patch("qiskit_code_assistant_mcp_server.constants.QCA_TOOL_MODEL_NAME", ""):
+            with patch(
+                "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_MODEL_NAME", ""
+            ):
                 result = validate_configuration()
                 assert result is False
 
@@ -49,7 +54,8 @@ class TestValidateConfiguration:
             "http://test-api.example.com",
         ):
             with patch(
-                "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_MODEL_NAME", "valid-model"
+                "qiskit_code_assistant_mcp_server.constants.QCA_TOOL_MODEL_NAME",
+                "valid-model",
             ):
                 result = validate_configuration()
                 assert result is True

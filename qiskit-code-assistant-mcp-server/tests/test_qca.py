@@ -30,7 +30,9 @@ class TestQCAListModels:
     @pytest.mark.asyncio
     async def test_list_models_empty_response(self, mock_env_vars):
         """Test handling of empty models response."""
-        with patch("qiskit_code_assistant_mcp_server.qca.make_qca_request") as mock_request:
+        with patch(
+            "qiskit_code_assistant_mcp_server.qca.make_qca_request"
+        ) as mock_request:
             mock_request.return_value = {"data": []}
 
             result = await qca_list_models()
@@ -41,7 +43,9 @@ class TestQCAListModels:
     @pytest.mark.asyncio
     async def test_list_models_api_error(self, mock_env_vars):
         """Test handling of API error."""
-        with patch("qiskit_code_assistant_mcp_server.qca.make_qca_request") as mock_request:
+        with patch(
+            "qiskit_code_assistant_mcp_server.qca.make_qca_request"
+        ) as mock_request:
             mock_request.return_value = {"error": "Authentication failed"}
 
             result = await qca_list_models()
@@ -52,7 +56,9 @@ class TestQCAListModels:
     @pytest.mark.asyncio
     async def test_list_models_exception(self, mock_env_vars):
         """Test handling of unexpected exceptions."""
-        with patch("qiskit_code_assistant_mcp_server.qca.make_qca_request") as mock_request:
+        with patch(
+            "qiskit_code_assistant_mcp_server.qca.make_qca_request"
+        ) as mock_request:
             mock_request.side_effect = Exception("Network error")
 
             result = await qca_list_models()
@@ -92,7 +98,9 @@ class TestQCAGetModel:
     @pytest.mark.asyncio
     async def test_get_model_not_found(self, mock_env_vars):
         """Test handling of model not found."""
-        with patch("qiskit_code_assistant_mcp_server.qca.make_qca_request") as mock_request:
+        with patch(
+            "qiskit_code_assistant_mcp_server.qca.make_qca_request"
+        ) as mock_request:
             mock_request.return_value = {"name": "Model X"}  # Missing 'id' field
 
             result = await qca_get_model("nonexistent-model")
@@ -144,7 +152,9 @@ class TestQCAGetCompletion:
     @pytest.mark.asyncio
     async def test_get_completion_no_choices(self, mock_env_vars):
         """Test handling of response with no choices."""
-        with patch("qiskit_code_assistant_mcp_server.qca.make_qca_request") as mock_request:
+        with patch(
+            "qiskit_code_assistant_mcp_server.qca.make_qca_request"
+        ) as mock_request:
             mock_request.return_value = {"id": "completion_123", "choices": []}
 
             result = await qca_get_completion("test prompt")
@@ -183,7 +193,9 @@ class TestQCAAcceptModelDisclaimer:
     @pytest.mark.asyncio
     async def test_accept_disclaimer_no_success_field(self, mock_env_vars):
         """Test handling of response without success field."""
-        with patch("qiskit_code_assistant_mcp_server.qca.make_qca_request") as mock_request:
+        with patch(
+            "qiskit_code_assistant_mcp_server.qca.make_qca_request"
+        ) as mock_request:
             mock_request.return_value = {
                 "acknowledged": True
             }  # Missing 'success' field
@@ -210,7 +222,9 @@ class TestQCAAcceptCompletion:
     @pytest.mark.asyncio
     async def test_accept_completion_no_result(self, mock_env_vars):
         """Test handling of response without result field."""
-        with patch("qiskit_code_assistant_mcp_server.qca.make_qca_request") as mock_request:
+        with patch(
+            "qiskit_code_assistant_mcp_server.qca.make_qca_request"
+        ) as mock_request:
             mock_request.return_value = {"status": "ok"}  # Missing 'result' field
 
             result = await qca_accept_completion("completion_456")
