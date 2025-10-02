@@ -1,5 +1,5 @@
 [project]
-name = "mcp-qiskit-code-assistant"
+name = "qiskit-code-assistant-mcp-server"
 version = "0.1.0"
 description = "MCP server for the Qiskit Code Assistant"
 readme = "README.md"
@@ -40,7 +40,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.scripts]
-mcp-qiskit-code-assistant = "mcp_qiskit_code_assistant:main"
+qiskit-code-assistant-mcp-server = "mcp_qiskit_code_assistant:main"
 
 [dependency-groups]
 dev = [

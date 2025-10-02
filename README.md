@@ -46,7 +46,7 @@ Each server is designed to run independently. Choose the server you need:
 #### 🧠 Qiskit Code Assistant Server
 ```bash
 cd qiskit-code-assistant-mcp-server
-uv run mcp-qiskit-code-assistant
+uv run qiskit-code-assistant-mcp-server
 ```
 
 #### ⚙️ IBM Runtime Server  
@@ -73,7 +73,7 @@ Both servers are compatible with any MCP client. Test interactively with MCP Ins
 
 ```bash
 # Test Code Assistant Server
-npx @modelcontextprotocol/inspector uv run mcp-qiskit-code-assistant
+npx @modelcontextprotocol/inspector uv run qiskit-code-assistant-mcp-server
 
 # Test IBM Runtime Server
 npx @modelcontextprotocol/inspector uv run qiskit-ibm-runtime-mcp-server
