@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional, Union
 
 import httpx
 
-from mcp_qiskit_code_assistant.constants import QCA_REQUEST_TIMEOUT, QCA_TOOL_X_CALLER
+from qiskit_code_assistant_mcp_server.constants import QCA_REQUEST_TIMEOUT, QCA_TOOL_X_CALLER
 
 
 def _get_token_from_system():

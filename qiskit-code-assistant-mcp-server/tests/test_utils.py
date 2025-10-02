@@ -6,7 +6,7 @@ import httpx
 import respx
 import os
 
-from mcp_qiskit_code_assistant.utils import (
+from qiskit_code_assistant_mcp_server.utils import (
     make_qca_request,
     get_error_message,
     get_http_client,
@@ -21,7 +21,7 @@ class TestGetTokenFromSystem:
         """Test token retrieval from environment variable."""
         with patch.dict("os.environ", {"QISKIT_IBM_TOKEN": "env_token_123"}):
             # Need to reload the module to get the updated token
-            from mcp_qiskit_code_assistant.utils import _get_token_from_system
+            from qiskit_code_assistant_mcp_server.utils import _get_token_from_system
 
             token = _get_token_from_system()
             assert token == "env_token_123"
@@ -33,7 +33,7 @@ class TestGetTokenFromSystem:
             if "QISKIT_IBM_TOKEN" in os.environ:
                 del os.environ["QISKIT_IBM_TOKEN"]
 
-            from mcp_qiskit_code_assistant.utils import _get_token_from_system
+            from qiskit_code_assistant_mcp_server.utils import _get_token_from_system
 
             token = _get_token_from_system()
             assert token == "test_token_from_file"
@@ -42,7 +42,7 @@ class TestGetTokenFromSystem:
         """Test exception when no token is available."""
         with patch.dict("os.environ", {}, clear=True):
             with patch("pathlib.Path.exists", return_value=False):
-                from mcp_qiskit_code_assistant.utils import _get_token_from_system
+                from qiskit_code_assistant_mcp_server.utils import _get_token_from_system
 
                 with pytest.raises(Exception) as exc_info:
                     _get_token_from_system()
@@ -58,7 +58,7 @@ class TestGetTokenFromSystem:
             json.dump({"other-account": {"token": "other_token"}}, f)
 
         with patch.dict("os.environ", {}, clear=True):
-            from mcp_qiskit_code_assistant.utils import _get_token_from_system
+            from qiskit_code_assistant_mcp_server.utils import _get_token_from_system
 
             with pytest.raises(Exception) as exc_info:
                 _get_token_from_system()

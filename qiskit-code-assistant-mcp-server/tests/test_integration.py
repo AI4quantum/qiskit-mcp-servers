@@ -5,8 +5,8 @@ from unittest.mock import patch
 import httpx
 import respx
 
-from mcp_qiskit_code_assistant.server import mcp
-from mcp_qiskit_code_assistant.constants import QCA_TOOL_API_BASE
+from qiskit_code_assistant_mcp_server.server import mcp
+from qiskit_code_assistant_mcp_server.constants import QCA_TOOL_API_BASE
 
 
 class TestMCPServerIntegration:
@@ -23,15 +23,15 @@ class TestMCPServerIntegration:
     async def test_configuration_validation(self, mock_env_vars):
         """Test that configuration validation runs on startup."""
         with patch(
-            "mcp_qiskit_code_assistant.constants.validate_configuration"
+            "qiskit_code_assistant_mcp_server.constants.validate_configuration"
         ) as mock_validate:
             mock_validate.return_value = True
 
             # Reimport server module to trigger validation
             import importlib
-            import mcp_qiskit_code_assistant.server
+            import qiskit_code_assistant_mcp_server.server
 
-            importlib.reload(mcp_qiskit_code_assistant.server)
+            importlib.reload(qiskit_code_assistant_mcp_server.server)
 
             mock_validate.assert_called_once()
 
@@ -42,7 +42,7 @@ class TestResourceHandlers:
     @pytest.mark.asyncio
     async def test_models_resource(self, mock_env_vars, mock_http_responses):
         """Test qca://models resource handler."""
-        from mcp_qiskit_code_assistant.qca import qca_list_models
+        from qiskit_code_assistant_mcp_server.qca import qca_list_models
 
         result = await qca_list_models()
 
@@ -53,7 +53,7 @@ class TestResourceHandlers:
     @pytest.mark.asyncio
     async def test_model_resource(self, mock_env_vars, mock_http_responses):
         """Test qca://model/{model_id} resource handler."""
-        from mcp_qiskit_code_assistant.qca import qca_get_model
+        from qiskit_code_assistant_mcp_server.qca import qca_get_model
 
         result = await qca_get_model("granite-3.3-8b-qiskit")
 
@@ -64,7 +64,7 @@ class TestResourceHandlers:
     @pytest.mark.asyncio
     async def test_disclaimer_resource(self, mock_env_vars, mock_http_responses):
         """Test qca://disclaimer/{model_id} resource handler."""
-        from mcp_qiskit_code_assistant.qca import qca_get_model_disclaimer
+        from qiskit_code_assistant_mcp_server.qca import qca_get_model_disclaimer
 
         result = await qca_get_model_disclaimer("granite-3.3-8b-qiskit")
 
@@ -74,7 +74,7 @@ class TestResourceHandlers:
     @pytest.mark.asyncio
     async def test_status_resource(self, mock_env_vars, mock_http_responses):
         """Test qca://status resource handler."""
-        from mcp_qiskit_code_assistant.qca import qca_get_service_status
+        from qiskit_code_assistant_mcp_server.qca import qca_get_service_status
 
         result = await qca_get_service_status()
 
@@ -87,7 +87,7 @@ class TestToolHandlers:
     @pytest.mark.asyncio
     async def test_completion_tool(self, mock_env_vars, mock_http_responses):
         """Test qca_get_completion tool."""
-        from mcp_qiskit_code_assistant.qca import qca_get_completion
+        from qiskit_code_assistant_mcp_server.qca import qca_get_completion
 
         result = await qca_get_completion("Create a quantum circuit")
 
@@ -98,7 +98,7 @@ class TestToolHandlers:
     @pytest.mark.asyncio
     async def test_rag_completion_tool(self, mock_env_vars, mock_http_responses):
         """Test qca_get_rag_completion tool."""
-        from mcp_qiskit_code_assistant.qca import qca_get_rag_completion
+        from qiskit_code_assistant_mcp_server.qca import qca_get_rag_completion
 
         result = await qca_get_rag_completion("What is quantum entanglement?")
 
@@ -109,7 +109,7 @@ class TestToolHandlers:
     @pytest.mark.asyncio
     async def test_accept_disclaimer_tool(self, mock_env_vars, mock_http_responses):
         """Test qca_accept_model_disclaimer tool."""
-        from mcp_qiskit_code_assistant.qca import qca_accept_model_disclaimer
+        from qiskit_code_assistant_mcp_server.qca import qca_accept_model_disclaimer
 
         result = await qca_accept_model_disclaimer(
             "granite-3.3-8b-qiskit", "disclaimer_123"
@@ -121,7 +121,7 @@ class TestToolHandlers:
     @pytest.mark.asyncio
     async def test_accept_completion_tool(self, mock_env_vars, mock_http_responses):
         """Test qca_accept_completion tool."""
-        from mcp_qiskit_code_assistant.qca import qca_accept_completion
+        from qiskit_code_assistant_mcp_server.qca import qca_accept_completion
 
         result = await qca_accept_completion("completion_456")
 
@@ -140,7 +140,7 @@ class TestErrorHandling:
                 side_effect=httpx.TimeoutException("Request timeout")
             )
 
-            from mcp_qiskit_code_assistant.qca import qca_list_models
+            from qiskit_code_assistant_mcp_server.qca import qca_list_models
 
             result = await qca_list_models()
 
@@ -158,7 +158,7 @@ class TestErrorHandling:
                 return_value=httpx.Response(401, json={"detail": "Invalid token"})
             )
 
-            from mcp_qiskit_code_assistant.qca import qca_list_models
+            from qiskit_code_assistant_mcp_server.qca import qca_list_models
 
             result = await qca_list_models()
 
@@ -174,7 +174,7 @@ class TestErrorHandling:
                 )
             )
 
-            from mcp_qiskit_code_assistant.qca import qca_get_completion
+            from qiskit_code_assistant_mcp_server.qca import qca_get_completion
 
             result = await qca_get_completion("test prompt")
 
@@ -187,7 +187,7 @@ class TestEndToEndScenarios:
     @pytest.mark.asyncio
     async def test_complete_workflow(self, mock_env_vars, mock_http_responses):
         """Test complete workflow: list models -> get completion -> accept."""
-        from mcp_qiskit_code_assistant.qca import (
+        from qiskit_code_assistant_mcp_server.qca import (
             qca_list_models,
             qca_get_completion,
             qca_accept_completion,
@@ -209,7 +209,7 @@ class TestEndToEndScenarios:
     @pytest.mark.asyncio
     async def test_disclaimer_workflow(self, mock_env_vars, mock_http_responses):
         """Test disclaimer workflow: get disclaimer -> accept disclaimer."""
-        from mcp_qiskit_code_assistant.qca import (
+        from qiskit_code_assistant_mcp_server.qca import (
             qca_get_model_disclaimer,
             qca_accept_model_disclaimer,
         )
