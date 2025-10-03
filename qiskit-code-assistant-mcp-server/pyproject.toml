@@ -8,6 +8,7 @@ dependencies = [
     "fastmcp>=2.8.1",
     "python-dotenv>=1.0.0",
     "httpx>=0.25.0",
+    "nest-asyncio>=1.5.0",
 ]
 [[project.authors]]
 name = "Quantum+AI Team. IBM Quantum"

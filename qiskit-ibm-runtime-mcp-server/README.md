@@ -53,46 +53,85 @@ The server will start and listen for MCP connections.
 
 ### Basic Usage Examples
 
-#### 1. Setup IBM Quantum Account
-```python
-# If not using environment variables
-setup_ibm_quantum_account(token="your_token_here")
-```
+#### Async Usage (MCP Server)
 
-#### 2. List Available Backends
 ```python
-backends = list_backends()
+# 1. Setup IBM Quantum Account
+await setup_ibm_quantum_account(token="your_token_here")
+
+# 2. List Available Backends
+backends = await list_backends()
 print(f"Available backends: {len(backends['backends'])}")
-```
 
-#### 3. Get the least busy backend
-```python
-backend = least_busy_backend()
+# 3. Get the least busy backend
+backend = await least_busy_backend()
 print(f"Least busy backend: {backend}")
-```
 
-#### 4. Get backend's properties
-```python
-backend_props = get_backend_properties("backend_name")
+# 4. Get backend's properties
+backend_props = await get_backend_properties("backend_name")
 print(f"Backend_name properties: {backend_props}")
-```
 
-#### 5. Get backend's properties
-```python
-jobs = list_my_jobs(10)
+# 5. List recent jobs
+jobs = await list_my_jobs(10)
 print(f"Last 10 jobs: {jobs}")
-```
 
-#### 6. Get backend's properties
-```python
-job_status = get_job_status("job_id")
+# 6. Get job status
+job_status = await get_job_status("job_id")
 print(f"Job status: {job_status}")
+
+# 7. Cancel job
+cancelled_job = await cancel_job("job_id")
+print(f"Cancelled job: {cancelled_job}")
 ```
 
-#### 7. Cancel job
+#### Sync Usage (DSPy, Scripts, Jupyter)
+
+For frameworks that don't support async operations:
+
 ```python
-cancelled_job = cancel_job("job_id")
-print(f"Cancelled job: {cancelled_job}")
+from qiskit_ibm_runtime_mcp_server.sync import (
+    setup_ibm_quantum_account_sync,
+    list_backends_sync,
+    least_busy_backend_sync,
+    get_backend_properties_sync,
+    list_my_jobs_sync,
+    get_job_status_sync,
+    cancel_job_sync
+)
+
+# Use synchronously without async/await
+backends = list_backends_sync()
+print(f"Available backends: {backends['total_backends']}")
+
+# Get least busy backend
+backend = least_busy_backend_sync()
+print(f"Least busy: {backend['backend_name']}")
+
+# Works in Jupyter notebooks and DSPy agents
+jobs = list_my_jobs_sync(limit=5)
+print(f"Recent jobs: {len(jobs['jobs'])}")
+```
+
+**DSPy Integration Example:**
+
+```python
+import dspy
+from qiskit_ibm_runtime_mcp_server.sync import (
+    list_backends_sync,
+    least_busy_backend_sync,
+    get_backend_properties_sync
+)
+
+agent = dspy.ReAct(
+    YourSignature,
+    tools=[
+        list_backends_sync,
+        least_busy_backend_sync,
+        get_backend_properties_sync
+    ]
+)
+
+result = agent(user_request="What QPUs are available?")
 ```
 
 
