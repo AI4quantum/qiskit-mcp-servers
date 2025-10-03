@@ -1,6 +1,5 @@
 """Unit tests for sync wrapper functions."""
 
-import pytest
 from unittest.mock import patch
 
 from qiskit_ibm_runtime_mcp_server.sync import (
