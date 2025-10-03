@@ -21,6 +21,7 @@ from qiskit_ibm_runtime_mcp_server.ibm_runtime import (
 # Apply nest_asyncio to allow running async code in environments with existing event loops
 try:
     import nest_asyncio
+
     nest_asyncio.apply()
 except ImportError:
     pass

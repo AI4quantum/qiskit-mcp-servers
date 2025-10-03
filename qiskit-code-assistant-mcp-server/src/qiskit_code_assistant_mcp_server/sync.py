@@ -21,6 +21,7 @@ from qiskit_code_assistant_mcp_server.qca import (
 # Apply nest_asyncio to allow running async code in environments with existing event loops
 try:
     import nest_asyncio
+
     nest_asyncio.apply()
 except ImportError:
     pass

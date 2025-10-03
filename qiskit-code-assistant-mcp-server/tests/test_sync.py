@@ -26,9 +26,7 @@ class TestQCAListModelsSync:
             ],
         }
 
-        with patch(
-            "qiskit_code_assistant_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_code_assistant_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = qca_list_models_sync()
@@ -41,9 +39,7 @@ class TestQCAListModelsSync:
         """Test error handling in sync wrapper."""
         mock_response = {"status": "error", "message": "Authentication failed"}
 
-        with patch(
-            "qiskit_code_assistant_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_code_assistant_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = qca_list_models_sync()
@@ -96,9 +92,7 @@ class TestQCAGetCompletionSync:
             "choices": [{"text": "from qiskit import QuantumCircuit"}],
         }
 
-        with patch(
-            "qiskit_code_assistant_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_code_assistant_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = qca_get_completion_sync("Create a quantum circuit")
@@ -114,9 +108,7 @@ class TestQCAGetCompletionSync:
             "message": "prompt is required and cannot be empty",
         }
 
-        with patch(
-            "qiskit_code_assistant_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_code_assistant_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = qca_get_completion_sync("")
@@ -135,9 +127,7 @@ class TestQCAGetRagCompletionSync:
             "choices": [{"text": "Quantum entanglement is..."}],
         }
 
-        with patch(
-            "qiskit_code_assistant_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_code_assistant_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = qca_get_rag_completion_sync("What is quantum entanglement?")
@@ -153,9 +143,7 @@ class TestQCAAcceptCompletionSync:
         """Test successful completion acceptance with sync wrapper."""
         mock_response = {"status": "success", "result": "accepted"}
 
-        with patch(
-            "qiskit_code_assistant_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_code_assistant_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = qca_accept_completion_sync("comp_123")
@@ -171,9 +159,7 @@ class TestQCAGetServiceStatusSync:
         """Test successful service status check with sync wrapper."""
         mock_response = "Qiskit Code Assistant Service Status: {'connected': True}"
 
-        with patch(
-            "qiskit_code_assistant_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_code_assistant_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = qca_get_service_status_sync()

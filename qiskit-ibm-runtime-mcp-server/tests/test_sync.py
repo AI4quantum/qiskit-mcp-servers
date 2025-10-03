@@ -27,9 +27,7 @@ class TestSetupIBMQuantumAccountSync:
             "available_backends": 10,
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = setup_ibm_quantum_account_sync("test_token")
@@ -44,9 +42,7 @@ class TestSetupIBMQuantumAccountSync:
             "message": "Token is required and cannot be empty",
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = setup_ibm_quantum_account_sync("")
@@ -80,9 +76,7 @@ class TestListBackendsSync:
             "total_backends": 2,
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = list_backends_sync()
@@ -98,9 +92,7 @@ class TestListBackendsSync:
             "message": "Failed to list backends: service not initialized",
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = list_backends_sync()
@@ -121,9 +113,7 @@ class TestLeastBusyBackendSync:
             "operational": True,
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = least_busy_backend_sync()
@@ -139,9 +129,7 @@ class TestLeastBusyBackendSync:
             "message": "No operational quantum backends available",
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = least_busy_backend_sync()
@@ -164,9 +152,7 @@ class TestGetBackendPropertiesSync:
             "max_shots": 100000,
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = get_backend_properties_sync("ibm_brisbane")
@@ -200,9 +186,7 @@ class TestListMyJobsSync:
             "total_jobs": 2,
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = list_my_jobs_sync(limit=10)
@@ -225,9 +209,7 @@ class TestGetJobStatusSync:
             "creation_date": "2024-01-01",
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = get_job_status_sync("job_123")
@@ -248,9 +230,7 @@ class TestCancelJobSync:
             "message": "Job cancellation requested",
         }
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = cancel_job_sync("job_123")
@@ -266,9 +246,7 @@ class TestGetServiceStatusSync:
         """Test successful service status check with sync wrapper."""
         mock_response = "IBM Quantum Service Status: {'connected': True}"
 
-        with patch(
-            "qiskit_ibm_runtime_mcp_server.sync._run_async"
-        ) as mock_run:
+        with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
             mock_run.return_value = mock_response
 
             result = get_service_status_sync()
