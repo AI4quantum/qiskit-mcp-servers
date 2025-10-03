@@ -55,7 +55,7 @@ class TestGetTokenFromSystem:
         """Test exception when credentials file exists but missing default entry."""
         import json
 
-        # Create file without default-ibm-quantum entry
+        # Create file without default-ibm-quantum-platform entry
         with open(mock_qiskit_credentials, "w") as f:
             json.dump({"other-account": {"token": "other_token"}}, f)
 
@@ -65,7 +65,7 @@ class TestGetTokenFromSystem:
             with pytest.raises(Exception) as exc_info:
                 _get_token_from_system()
 
-            assert "default-ibm-quantum not found" in str(exc_info.value)
+            assert "default-ibm-quantum-platform not found" in str(exc_info.value)
 
 
 class TestGetErrorMessage:
