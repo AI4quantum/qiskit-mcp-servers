@@ -35,7 +35,7 @@ def mock_qiskit_credentials(tmp_path):
     qiskit_dir.mkdir()
 
     credentials = {
-        "default-ibm-quantum": {
+        "default-ibm-quantum-platform": {
             "token": "test_token_from_file",
             "url": "https://auth.quantum-computing.ibm.com/api",
         }
