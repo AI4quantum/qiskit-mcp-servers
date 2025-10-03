@@ -52,6 +52,34 @@ uv run qiskit-code-assistant-mcp-server
 
 The server will start and listen for MCP connections.
 
+### Using Sync Wrappers
+
+For frameworks that don't support async operations (DSPy, traditional scripts, etc.), use the synchronous wrappers:
+
+```python
+from qiskit_code_assistant_mcp_server.sync import (
+    qca_get_completion_sync,
+    qca_get_rag_completion_sync,
+    qca_list_models_sync
+)
+
+# Use synchronously without async/await
+result = qca_get_completion_sync("Write a quantum circuit for a Bell state")
+print(result)
+
+# Works in Jupyter notebooks
+rag_result = qca_get_rag_completion_sync("What is quantum entanglement?")
+print(rag_result)
+```
+
+**Available sync functions:**
+- `qca_list_models_sync()` - List available models
+- `qca_get_model_sync(model_id)` - Get model info
+- `qca_get_completion_sync(prompt)` - Get code completion
+- `qca_get_rag_completion_sync(prompt)` - Get RAG-based completion
+- `qca_accept_completion_sync(completion_id)` - Accept a completion
+- `qca_get_service_status_sync()` - Get service status
+
 
 ### Testing and debugging the server
 
