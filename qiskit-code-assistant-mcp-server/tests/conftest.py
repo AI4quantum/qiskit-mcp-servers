@@ -172,3 +172,6 @@ def sample_models_response():
             {"id": "granite-13b-qiskit", "name": "Granite 13B Qiskit"},
         ]
     }
+
+
+# Assisted by watsonx Code Assistant

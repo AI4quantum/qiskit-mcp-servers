@@ -420,3 +420,6 @@ async def get_service_status() -> str:
         logger.error(f"Failed to check service status: {e}")
         status_info = {"connected": False, "error": str(e), "service": "IBM Quantum"}
         return f"IBM Quantum Service Status: {status_info}"
+
+
+# Assisted by watsonx Code Assistant

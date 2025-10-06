@@ -321,3 +321,6 @@ class TestMakeQCARequest:
 
             # Clean up
             await close_http_client()
+
+
+# Assisted by watsonx Code Assistant
