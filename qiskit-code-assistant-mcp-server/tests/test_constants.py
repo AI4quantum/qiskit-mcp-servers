@@ -197,3 +197,6 @@ class TestVersionHandling:
                 "mcp-qiskit-code-assistant/unknown"
                 in constants_module.QCA_TOOL_X_CALLER
             )
+
+
+# Assisted by watsonx Code Assistant

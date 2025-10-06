@@ -276,3 +276,6 @@ class TestQCAServiceStatus:
             result = await qca_get_service_status()
 
             assert "Error" in result
+
+
+# Assisted by watsonx Code Assistant

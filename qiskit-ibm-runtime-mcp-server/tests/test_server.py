@@ -423,3 +423,6 @@ class TestGetServiceStatus:
 
                 assert "IBM Quantum Service Status" in result
                 assert "error" in result
+
+
+# Assisted by watsonx Code Assistant

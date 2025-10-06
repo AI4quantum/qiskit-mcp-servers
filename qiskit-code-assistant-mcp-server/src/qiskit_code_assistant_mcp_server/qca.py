@@ -277,3 +277,6 @@ async def qca_get_service_status() -> str:
     except Exception as e:
         logger.error(f"Failed to check service status: {str(e)}")
         return f"Qiskit Code Assistant Service Status: Error - {str(e)}"
+
+
+# Assisted by watsonx Code Assistant

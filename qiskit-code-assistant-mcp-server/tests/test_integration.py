@@ -236,3 +236,6 @@ class TestEndToEndScenarios:
             "granite-3.3-8b-qiskit", disclaimer_id
         )
         assert accept_result["status"] == "success"
+
+
+# Assisted by watsonx Code Assistant

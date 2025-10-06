@@ -146,3 +146,6 @@ async def make_qca_request(
         return {
             "error": f"Request failed after {max_retries} attempts: {str(last_exception)}"
         }
+
+
+# Assisted by watsonx Code Assistant
