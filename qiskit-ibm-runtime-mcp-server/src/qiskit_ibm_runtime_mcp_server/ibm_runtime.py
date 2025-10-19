@@ -13,6 +13,7 @@
 """Core IBM Runtime functions for the MCP server."""
 
 import logging
+import os
 from typing import Any, Dict, Optional
 
 from qiskit_ibm_runtime import QiskitRuntimeService  # type: ignore[import-untyped]
@@ -30,6 +31,23 @@ def least_busy(backends):
         return None
 
     return min(operational_backends, key=lambda b: b.status().pending_jobs)
+
+
+def get_token_from_env() -> Optional[str]:
+    """
+    Get IBM Quantum token from environment variables.
+
+    Returns:
+        Token string if found in environment, None otherwise
+    """
+    token = os.getenv("IBM_QUANTUM_TOKEN")
+    if (
+        token
+        and token.strip()
+        and token.strip() not in ["<PASSWORD>", "<TOKEN>", "YOUR_TOKEN_HERE"]
+    ):
+        return token.strip()
+    return None
 
 
 logger = logging.getLogger(__name__)
@@ -54,29 +72,48 @@ def initialize_service(
     global service
 
     try:
-        if token:
+        # First, try to initialize from saved credentials (unless a new token is explicitly provided)
+        if not token:
+            try:
+                service = QiskitRuntimeService(channel=channel)
+                logger.info(
+                    f"Successfully initialized IBM Runtime service from saved credentials on channel: {channel}"
+                )
+                return service
+            except Exception as e:
+                logger.info(f"No saved credentials found or invalid: {e}")
+                raise ValueError(
+                    "No IBM Quantum token provided and no saved credentials available"
+                ) from e
+
+        # If a token is provided, validate it's not a placeholder before saving
+        if token and token.strip():
+            # Check for common placeholder patterns
+            if token.strip() in ["<PASSWORD>", "<TOKEN>", "YOUR_TOKEN_HERE", "xxx"]:
+                raise ValueError(
+                    f"Invalid token: '{token.strip()}' appears to be a placeholder value"
+                )
+
             # Save account with provided token
             try:
                 QiskitRuntimeService.save_account(
-                    channel=channel, token=token, overwrite=True
+                    channel=channel, token=token.strip(), overwrite=True
                 )
                 logger.info(f"Saved IBM Quantum account for channel: {channel}")
             except Exception as e:
                 logger.error(f"Failed to save account: {e}")
                 raise ValueError("Invalid token or channel") from e
 
-        # Initialize service
-        try:
-            service = QiskitRuntimeService(channel=channel)
-            logger.info(
-                f"Successfully initialized IBM Runtime service on channel: {channel}"
-            )
-            return service
-        except Exception as e:
-            if "No account" in str(e) and not token:
-                raise ValueError("No IBM Quantum token provided") from e
-            logger.error(f"Failed to initialize IBM Runtime service: {e}")
-            raise
+            # Initialize service with the new token
+            try:
+                service = QiskitRuntimeService(channel=channel)
+                logger.info(
+                    f"Successfully initialized IBM Runtime service on channel: {channel}"
+                )
+                return service
+            except Exception as e:
+                logger.error(f"Failed to initialize IBM Runtime service: {e}")
+                raise
 
     except Exception as e:
         if not isinstance(e, ValueError):
@@ -85,20 +122,28 @@ def initialize_service(
 
 
 async def setup_ibm_quantum_account(
-    token: str, channel: str = "ibm_quantum_platform"
+    token: Optional[str] = None, channel: str = "ibm_quantum_platform"
 ) -> Dict[str, Any]:
     """
     Set up IBM Quantum account with credentials.
 
     Args:
-        token: IBM Quantum API token
+        token: IBM Quantum API token (optional - will try environment or saved credentials)
         channel: Service channel ('ibm_quantum_platform')
 
     Returns:
         Setup status and information
     """
+    # Try to get token from environment if not provided
     if not token or not token.strip():
-        return {"status": "error", "message": "Token is required and cannot be empty"}
+        env_token = get_token_from_env()
+        if env_token:
+            logger.info("Using token from IBM_QUANTUM_TOKEN environment variable")
+            token = env_token
+        else:
+            # Try to use saved credentials
+            logger.info("No token provided, attempting to use saved credentials")
+            token = None
 
     if channel not in ["ibm_quantum_platform"]:
         return {
@@ -107,7 +152,7 @@ async def setup_ibm_quantum_account(
         }
 
     try:
-        service_instance = initialize_service(token.strip(), channel)
+        service_instance = initialize_service(token.strip() if token else None, channel)
 
         # Get backend count for response
         try:

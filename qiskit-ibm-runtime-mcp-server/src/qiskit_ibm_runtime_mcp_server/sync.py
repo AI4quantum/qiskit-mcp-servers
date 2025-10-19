@@ -60,20 +60,20 @@ def _run_async(coro):
 
 
 def setup_ibm_quantum_account_sync(
-    token: str, channel: str = "ibm_quantum_platform"
+    token: str = "", channel: str = "ibm_quantum_platform"
 ) -> Dict[str, Any]:
     """Set up IBM Quantum account with credentials.
 
     Synchronous version of setup_ibm_quantum_account.
 
     Args:
-        token: IBM Quantum API token
+        token: IBM Quantum API token (optional - will try environment or saved credentials)
         channel: Service channel ('ibm_quantum_platform')
 
     Returns:
         Setup status and information
     """
-    return _run_async(setup_ibm_quantum_account(token, channel))
+    return _run_async(setup_ibm_quantum_account(token if token else None, channel))
 
 
 def list_backends_sync() -> Dict[str, Any]:

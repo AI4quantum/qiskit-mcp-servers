@@ -26,7 +26,36 @@ from qiskit_ibm_runtime_mcp_server.ibm_runtime import (
     get_job_status,
     cancel_job,
     get_service_status,
+    get_token_from_env,
 )
+
+
+class TestGetTokenFromEnv:
+    """Test get_token_from_env function."""
+
+    def test_get_token_from_env_valid(self):
+        """Test getting valid token from environment."""
+        with patch.dict(os.environ, {"IBM_QUANTUM_TOKEN": "valid_token_123"}):
+            token = get_token_from_env()
+            assert token == "valid_token_123"
+
+    def test_get_token_from_env_empty(self):
+        """Test getting token when environment variable is not set."""
+        with patch.dict(os.environ, {}, clear=True):
+            token = get_token_from_env()
+            assert token is None
+
+    def test_get_token_from_env_placeholder(self):
+        """Test that placeholder tokens are rejected."""
+        with patch.dict(os.environ, {"IBM_QUANTUM_TOKEN": "<PASSWORD>"}):
+            token = get_token_from_env()
+            assert token is None
+
+    def test_get_token_from_env_whitespace(self):
+        """Test that whitespace-only tokens return None."""
+        with patch.dict(os.environ, {"IBM_QUANTUM_TOKEN": "   "}):
+            token = get_token_from_env()
+            assert token is None
 
 
 class TestInitializeService:
@@ -99,6 +128,28 @@ class TestInitializeService:
 
             assert "Invalid token or channel" in str(exc_info.value)
 
+    def test_initialize_service_placeholder_token(self):
+        """Test that placeholder tokens are rejected."""
+        with pytest.raises(ValueError) as exc_info:
+            initialize_service(token="<PASSWORD>")
+
+        assert "appears to be a placeholder value" in str(exc_info.value)
+
+    def test_initialize_service_prioritizes_saved_credentials(
+        self, mock_runtime_service
+    ):
+        """Test that saved credentials are tried first when no token provided."""
+        with patch(
+            "qiskit_ibm_runtime_mcp_server.ibm_runtime.QiskitRuntimeService"
+        ) as mock_qrs:
+            mock_qrs.return_value = mock_runtime_service
+
+            service = initialize_service()
+
+            assert service == mock_runtime_service
+            # Should NOT call save_account
+            mock_qrs.save_account.assert_not_called()
+
 
 class TestSetupIBMQuantumAccount:
     """Test setup_ibm_quantum_account function."""
@@ -119,20 +170,32 @@ class TestSetupIBMQuantumAccount:
             mock_init.assert_called_once_with("test_token", "ibm_quantum_platform")
 
     @pytest.mark.asyncio
-    async def test_setup_account_empty_token(self):
-        """Test setup with empty token."""
-        result = await setup_ibm_quantum_account("")
+    async def test_setup_account_empty_token_with_saved_credentials(
+        self, mock_runtime_service
+    ):
+        """Test setup with empty token falls back to saved credentials."""
+        with patch(
+            "qiskit_ibm_runtime_mcp_server.ibm_runtime.initialize_service"
+        ) as mock_init:
+            with patch(
+                "qiskit_ibm_runtime_mcp_server.ibm_runtime.get_token_from_env"
+            ) as mock_env:
+                mock_env.return_value = None  # No env token
+                mock_init.return_value = mock_runtime_service
 
-        assert result["status"] == "error"
-        assert "Token is required" in result["message"]
+                result = await setup_ibm_quantum_account("")
+
+                assert result["status"] == "success"
+                # Should initialize with None to use saved credentials
+                mock_init.assert_called_once_with(None, "ibm_quantum_platform")
 
     @pytest.mark.asyncio
-    async def test_setup_account_whitespace_token(self):
-        """Test setup with whitespace-only token."""
-        result = await setup_ibm_quantum_account("   ")
+    async def test_setup_account_placeholder_token(self):
+        """Test setup with placeholder token is rejected."""
+        result = await setup_ibm_quantum_account("<PASSWORD>")
 
         assert result["status"] == "error"
-        assert "Token is required" in result["message"]
+        assert "appears to be a placeholder value" in result["message"]
 
     @pytest.mark.asyncio
     async def test_setup_account_invalid_channel(self):

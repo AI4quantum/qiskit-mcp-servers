@@ -46,11 +46,13 @@ class TestSetupIBMQuantumAccountSync:
             assert result["status"] == "success"
             assert result["available_backends"] == 10
 
-    def test_setup_account_sync_empty_token(self):
-        """Test validation of empty token."""
+    def test_setup_account_sync_empty_token_uses_saved_credentials(self):
+        """Test that empty token falls back to saved credentials."""
         mock_response = {
-            "status": "error",
-            "message": "Token is required and cannot be empty",
+            "status": "success",
+            "message": "IBM Quantum account set up successfully",
+            "channel": "ibm_quantum_platform",
+            "available_backends": 5,
         }
 
         with patch("qiskit_ibm_runtime_mcp_server.sync._run_async") as mock_run:
@@ -58,7 +60,8 @@ class TestSetupIBMQuantumAccountSync:
 
             result = setup_ibm_quantum_account_sync("")
 
-            assert result["status"] == "error"
+            assert result["status"] == "success"
+            assert result["available_backends"] == 5
 
 
 class TestListBackendsSync:
