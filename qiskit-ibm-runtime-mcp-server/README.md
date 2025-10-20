@@ -11,7 +11,7 @@ A comprehensive Model Context Protocol (MCP) server that provides AI assistants 
 ## Prerequisites
 
 - Python 3.10 or higher
-- IBM Quantum account (free at [quantum.ibm.com](https://quantum.ibm.com))
+- IBM Quantum account (free at [quantum.cloud.ibm.com](https://quantum.cloud.ibm.com))
 - IBM Quantum API token
 
 ## Installation
@@ -26,20 +26,45 @@ This project recommends using [uv](https://astral.sh/uv) for virtual environment
    uv sync
    ```
 
-2. **Configure environment variables**:
+2. **Get your IBM Quantum token** (if you don't have saved credentials):
+   - Visit [IBM Quantum](https://quantum.cloud.ibm.com/)
+   - Find your API key. From the [dashboard](https://quantum.cloud.ibm.com/), create your API key, then copy it to a secure location so you can use it for authentication. [More information](https://quantum.cloud.ibm.com/docs/en/guides/save-credentials)
+
+3. **Configure your credentials** (choose one method):
+
+   **Option A: Environment Variable (Recommended)**
    ```bash
    # Copy the example environment file
    cp .env.example .env
-   
+
    # Edit .env and add your IBM Quantum API token
+   export IBM_QUANTUM_TOKEN="your_token_here"
    ```
 
-3. **Get your IBM Quantum token**:
-   - Visit [IBM Quantum](https://quantum.ibm.com)
-   - Sign up or log in to your account
-   - Go to Account Settings
-   - Copy your API token
-   - Add it to your .env file
+   **Option B: Save Credentials Locally**
+   ```python
+   from qiskit_ibm_runtime import QiskitRuntimeService
+
+   # Save your credentials (one-time setup)
+   QiskitRuntimeService.save_account(
+       channel="ibm_quantum_platform",
+       token="your_token_here",
+       overwrite=True
+   )
+   ```
+   This stores your credentials in `~/.qiskit/qiskit-ibm.json`
+
+   **Option C: Pass Token Directly**
+   ```python
+   # Provide token when setting up the account
+   await setup_ibm_quantum_account(token="your_token_here")
+   ```
+
+   **Token Resolution Priority:**
+   The server looks for credentials in this order:
+   1. Explicit token passed to `setup_ibm_quantum_account()`
+   2. `IBM_QUANTUM_TOKEN` environment variable
+   3. Saved credentials in `~/.qiskit/qiskit-ibm.json`
 
 ## Quick Start
 
@@ -56,10 +81,13 @@ The server will start and listen for MCP connections.
 #### Async Usage (MCP Server)
 
 ```python
-# 1. Setup IBM Quantum Account
-await setup_ibm_quantum_account(token="your_token_here")
+# 1. Setup IBM Quantum Account (optional if credentials already configured)
+# Will use saved credentials or environment variable if token not provided
+await setup_ibm_quantum_account()  # Uses saved credentials/env var
+# OR
+await setup_ibm_quantum_account(token="your_token_here")  # Explicit token
 
-# 2. List Available Backends
+# 2. List Available Backends (no setup needed if credentials are saved)
 backends = await list_backends()
 print(f"Available backends: {len(backends['backends'])}")
 
@@ -99,7 +127,11 @@ from qiskit_ibm_runtime_mcp_server.sync import (
     cancel_job_sync
 )
 
-# Use synchronously without async/await
+# Optional: Setup account if not already configured
+# Will automatically use IBM_QUANTUM_TOKEN env var or saved credentials
+setup_ibm_quantum_account_sync()  # No token needed if already configured
+
+# Use synchronously without async/await - no setup needed if credentials saved
 backends = list_backends_sync()
 print(f"Available backends: {backends['total_backends']}")
 
@@ -116,15 +148,24 @@ print(f"Recent jobs: {len(jobs['jobs'])}")
 
 ```python
 import dspy
+import os
+from dotenv import load_dotenv
 from qiskit_ibm_runtime_mcp_server.sync import (
+    setup_ibm_quantum_account_sync,
     list_backends_sync,
     least_busy_backend_sync,
     get_backend_properties_sync
 )
 
+# Load environment variables (includes IBM_QUANTUM_TOKEN)
+load_dotenv()
+
+# The agent will automatically use saved credentials or environment variables
+# No need to explicitly pass tokens to individual functions
 agent = dspy.ReAct(
     YourSignature,
     tools=[
+        setup_ibm_quantum_account_sync,  # Optional - only if you need to verify setup
         list_backends_sync,
         least_busy_backend_sync,
         get_backend_properties_sync
@@ -139,14 +180,18 @@ result = agent(user_request="What QPUs are available?")
 
 ### Tools
 
-#### `setup_ibm_quantum_account(token: str, channel: str = "ibm_quantum_platform")`
+#### `setup_ibm_quantum_account(token: str = "", channel: str = "ibm_quantum_platform")`
 Configure IBM Quantum account with API token.
 
 **Parameters:**
-- `token`: IBM Quantum API token
-- `channel`: Service channel ("ibm_quantum_platform")
+- `token` (optional): IBM Quantum API token. If not provided, the function will:
+  1. Check for `IBM_QUANTUM_TOKEN` environment variable
+  2. Use saved credentials from `~/.qiskit/qiskit-ibm.json`
+- `channel`: Service channel (default: `"ibm_quantum_platform"`)
 
 **Returns:** Setup status and account information
+
+**Note:** If you already have saved credentials or have set the `IBM_QUANTUM_TOKEN` environment variable, you can call this function without parameters or skip it entirely and use other functions directly.
 
 #### `list_backends()`
 Get list of available quantum backends.
@@ -198,10 +243,15 @@ Get current service status and connection info.
 
 ## Security Considerations
 
-- Store IBM Quantum tokens securely
-- Use environment variables for production deployments
-- Implement rate limiting for production use
-- Monitor quantum resource consumption
+- **Store IBM Quantum tokens securely**: Never commit tokens to version control
+- **Use environment variables for production deployments**: Set `IBM_QUANTUM_TOKEN` environment variable
+- **Credential Priority**: The server automatically resolves credentials in this order:
+  1. Explicit token parameter (highest priority)
+  2. `IBM_QUANTUM_TOKEN` environment variable
+  3. Saved credentials in `~/.qiskit/qiskit-ibm.json` (lowest priority)
+- **Token Validation**: The server rejects placeholder values like `<PASSWORD>`, `<TOKEN>`, etc., to prevent accidental credential corruption
+- **Implement rate limiting for production use**: Monitor API request frequency
+- **Monitor quantum resource consumption**: Track job submissions and backend usage
 
 ## Contributing
 
