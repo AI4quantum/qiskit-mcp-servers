@@ -28,9 +28,7 @@ This project recommends using [uv](https://astral.sh/uv) for virtual environment
 
 2. **Get your IBM Quantum token** (if you don't have saved credentials):
    - Visit [IBM Quantum](https://quantum.cloud.ibm.com/)
-   - Sign up or log in to your account
-   - Go to Account Settings
-   - Copy your API token
+   - Find your API key. From the [dashboard](https://quantum.cloud.ibm.com/), create your API key, then copy it to a secure location so you can use it for authentication. [More information](https://quantum.cloud.ibm.com/docs/en/guides/save-credentials)
 
 3. **Configure your credentials** (choose one method):
 
