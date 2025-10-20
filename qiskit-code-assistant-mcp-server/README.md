@@ -39,7 +39,7 @@ This project uses [uv](https://astral.sh/uv) for virtual environments and depend
    cp .env.example .env
    
    # Edit .env and add your IBM Quantum API token
-   # Get your token from: https://quantum.ibm.com/account
+   # Get your token from: https://cloud.quantum.ibm.com/
    ```
 
 ## Quick Start

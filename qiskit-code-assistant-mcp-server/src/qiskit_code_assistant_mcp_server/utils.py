@@ -31,7 +31,7 @@ def _get_token_from_system():
         if not qiskit_file.exists():
             raise Exception(
                 f"Credentials file {qiskit_file} does not exist. Please set env var QISKIT_IBM_TOKEN to access the service, or save your IBM Quantum API token using QiskitRuntimeService. "
-                "More info about saving your token using QiskitRuntimeService https://docs.quantum.ibm.com/api/qiskit-ibm-runtime/qiskit_ibm_runtime.QiskitRuntimeService#save_account"
+                "More info about saving your token using QiskitRuntimeService https://quantum.cloud.ibm.com/docs/en/api/qiskit-ibm-runtime/qiskit-runtime-service"
             )
 
         with open(qiskit_file, "r") as _sc:
@@ -41,7 +41,7 @@ def _get_token_from_system():
         if token is None:
             raise Exception(
                 f"default-ibm-quantum-platform not found in {qiskit_file}. Please set env var QISKIT_IBM_TOKEN to access the service, or save your IBM Quantum API token using QiskitRuntimeService. "
-                "More info about saving your token using QiskitRuntimeService https://docs.quantum.ibm.com/api/qiskit-ibm-runtime/qiskit_ibm_runtime.QiskitRuntimeService#save_account"
+                "More info about saving your token using QiskitRuntimeService https://quantum.cloud.ibm.com/docs/en/api/qiskit-ibm-runtime/qiskit-runtime-service"
             )
 
     return token

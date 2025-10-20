@@ -11,7 +11,7 @@ A comprehensive Model Context Protocol (MCP) server that provides AI assistants 
 ## Prerequisites
 
 - Python 3.10 or higher
-- IBM Quantum account (free at [quantum.ibm.com](https://quantum.ibm.com))
+- IBM Quantum account (free at [quantum.cloud.ibm.com](https://quantum.cloud.ibm.com))
 - IBM Quantum API token
 
 ## Installation
