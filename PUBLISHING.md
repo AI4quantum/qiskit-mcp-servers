@@ -11,6 +11,28 @@ This repository contains two separate PyPI packages:
 
 ## Automated Publishing (Recommended)
 
+### Prerequisites
+
+To create releases using the automated approach, you'll need:
+
+- **Git**: For creating and pushing tags
+- **GitHub CLI (`gh`)**: For creating releases from the command line
+  - Install from https://cli.github.com/ or via package manager:
+    ```bash
+    # macOS
+    brew install gh
+
+    # Linux
+    sudo apt install gh  # Debian/Ubuntu
+    sudo dnf install gh  # Fedora
+
+    # Windows
+    winget install GitHub.cli
+    ```
+  - Authenticate with: `gh auth login`
+
+Alternatively, you can create releases manually through the GitHub web interface instead of using the `gh` CLI.
+
 ### Setup: Configure Trusted Publishing
 
 **One-time setup** - Configure trusted publishing on PyPI (no API tokens needed):
@@ -54,7 +76,20 @@ gh release create runtime-v0.1.1 --title "qiskit-ibm-runtime-mcp-server v0.1.1" 
 
 ### Manual Workflow Trigger
 
-You can also trigger publishing manually via GitHub Actions:
+You can also trigger publishing manually via GitHub Actions using the CLI:
+
+```bash
+# Publish both packages
+gh workflow run "Publish to PyPI" -f package=both
+
+# Publish only code-assistant
+gh workflow run "Publish to PyPI" -f package=code-assistant
+
+# Publish only runtime
+gh workflow run "Publish to PyPI" -f package=runtime
+```
+
+Alternatively, you can trigger via the GitHub web interface:
 
 1. Go to **Actions** → **Publish to PyPI**
 2. Click **Run workflow**
@@ -63,6 +98,8 @@ You can also trigger publishing manually via GitHub Actions:
 ## Manual Publishing
 
 ### Prerequisites
+
+**Python version**: Python 3.10 or higher is required (as specified in each mcp-server `pyproject.toml`).
 
 Install build tools:
 ```bash
@@ -165,8 +202,10 @@ Both packages use **semantic versioning**: `MAJOR.MINOR.PATCH`
 
 ### Current Versions
 
-- **qiskit-code-assistant-mcp-server**: `0.1.0` (Alpha)
-- **qiskit-ibm-runtime-mcp-server**: `0.1.0` (Alpha)
+The current version for each package is defined in their respective `pyproject.toml` files:
+
+- **qiskit-code-assistant-mcp-server**: See [qiskit-code-assistant-mcp-server/pyproject.toml](qiskit-code-assistant-mcp-server/pyproject.toml) (search for `version =`)
+- **qiskit-ibm-runtime-mcp-server**: See [qiskit-ibm-runtime-mcp-server/pyproject.toml](qiskit-ibm-runtime-mcp-server/pyproject.toml) (search for `version =`)
 
 ## Pre-Publication Checklist
 
