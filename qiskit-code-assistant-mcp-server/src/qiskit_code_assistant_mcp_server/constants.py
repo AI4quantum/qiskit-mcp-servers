@@ -28,9 +28,9 @@ logger = logging.getLogger(__name__)
 ##################################################
 
 try:
-    QCA_TOOL_X_CALLER = f"mcp-qiskit-code-assistant/{importlib.metadata.version('mcp-qiskit-code-assistant')}"
+    QCA_TOOL_X_CALLER = f"qiskit-code-assistant-mcp-server/{importlib.metadata.version('qiskit-code-assistant-mcp-server')}"
 except Exception:
-    QCA_TOOL_X_CALLER = "mcp-qiskit-code-assistant/unknown"
+    QCA_TOOL_X_CALLER = "qiskit-code-assistant-mcp-server/unknown"
     logger.warning("Could not determine package version for X-Caller header")
 
 QCA_REQUEST_TIMEOUT = float(os.getenv("QCA_REQUEST_TIMEOUT", "30.0"))
