@@ -1,0 +1,79 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to publish (code-assistant, runtime, or both)'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+          - both
+          - code-assistant
+          - runtime
+
+jobs:
+  publish-code-assistant:
+    if: |
+      (github.event_name == 'release' && contains(github.ref, 'code-assistant')) ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.package == 'both' || github.event.inputs.package == 'code-assistant'))
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for trusted publishing
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+
+    - name: Set up Python
+      run: uv python install 3.12
+
+    - name: Build package
+      working-directory: ./qiskit-code-assistant-mcp-server
+      run: |
+        uv build
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: qiskit-code-assistant-mcp-server/dist/
+        verbose: true
+
+  publish-runtime:
+    if: |
+      (github.event_name == 'release' && contains(github.ref, 'runtime')) ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.package == 'both' || github.event.inputs.package == 'runtime'))
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for trusted publishing
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+
+    - name: Set up Python
+      run: uv python install 3.12
+
+    - name: Build package
+      working-directory: ./qiskit-ibm-runtime-mcp-server
+      run: |
+        uv build
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: qiskit-ibm-runtime-mcp-server/dist/
+        verbose: true
