@@ -23,12 +23,21 @@ Provides access to IBM's Qiskit Code Assistant AI for intelligent quantum progra
 
 ---
 
-### ⚙️ Qiskit IBM Runtime MCP Server  
+### ⚙️ Qiskit IBM Runtime MCP Server
 **Complete access to IBM Quantum cloud services**
 
 Comprehensive interface to IBM Quantum hardware via Qiskit IBM Runtime
 
 **📁 Directory**: [`./qiskit-ibm-runtime-mcp-server/`](./qiskit-ibm-runtime-mcp-server/)
+
+---
+
+### 🔬 Qiskit MCP Server
+**Quantum circuit creation, manipulation, and simulation**
+
+Direct access to Qiskit SDK for quantum circuit development, transpilation, and local simulation
+
+**📁 Directory**: [`./qiskit-mcp-server/`](./qiskit-mcp-server/)
 
 ## 🚀 Quick Start
 
@@ -49,10 +58,16 @@ cd qiskit-code-assistant-mcp-server
 uv run qiskit-code-assistant-mcp-server
 ```
 
-#### ⚙️ IBM Runtime Server  
+#### ⚙️ IBM Runtime Server
 ```bash
 cd qiskit-ibm-runtime-mcp-server
 uv run qiskit-ibm-runtime-mcp-server
+```
+
+#### 🔬 Qiskit SDK Server
+```bash
+cd qiskit-mcp-server
+uv run qiskit-mcp-server
 ```
 
 ### 🔧 Configuration
@@ -62,14 +77,18 @@ uv run qiskit-ibm-runtime-mcp-server
 # For IBM Runtime Server
 export QISKIT_IBM_TOKEN="your_ibm_quantum_token_here"
 
-# For Code Assistant Server  
+# For Code Assistant Server
 export QISKIT_IBM_TOKEN="your_ibm_quantum_token_here"
 export QCA_TOOL_API_BASE="https://qiskit-code-assistant.quantum.ibm.com"
+
+# For Qiskit SDK Server (no credentials required)
+# Optional: Set log level
+export LOG_LEVEL=INFO
 ```
 
 #### Using with MCP Clients
 
-Both servers are compatible with any MCP client. Test interactively with MCP Inspector:
+All servers are compatible with any MCP client. Test interactively with MCP Inspector:
 
 ```bash
 # Test Code Assistant Server
@@ -77,13 +96,16 @@ npx @modelcontextprotocol/inspector uv run qiskit-code-assistant-mcp-server
 
 # Test IBM Runtime Server
 npx @modelcontextprotocol/inspector uv run qiskit-ibm-runtime-mcp-server
+
+# Test Qiskit SDK Server
+npx @modelcontextprotocol/inspector uv run qiskit-mcp-server
 ```
 
 ## 🏗️ Architecture & Design
 
 ### 🎯 Unified Design Principles
 
-Both servers follow a **consistent, production-ready architecture**:
+All servers follow a **consistent, production-ready architecture**:
 
 - **🔄 Async-first**: Built with FastMCP for high-performance async operations
 - **🧪 Test-driven**: Comprehensive test suites with 65%+ coverage
@@ -93,7 +115,7 @@ Both servers follow a **consistent, production-ready architecture**:
 
 ### 🔌 MCP Protocol Support
 
-Both servers implement the full **Model Context Protocol specification**:
+All servers implement the full **Model Context Protocol specification**:
 
 - **🛠️ Tools**: Execute quantum operations (code completion, job submission, backend queries)
 - **📚 Resources**: Access quantum data (service status, backend information, model details)
@@ -108,13 +130,17 @@ Both servers implement the full **Model Context Protocol specification**:
 cd qiskit-code-assistant-mcp-server
 ./run_tests.sh
 
-# Run tests for IBM Runtime server  
+# Run tests for IBM Runtime server
 cd qiskit-ibm-runtime-mcp-server
+./run_tests.sh
+
+# Run tests for Qiskit SDK server
+cd qiskit-mcp-server
 ./run_tests.sh
 ```
 
 ### 🔍 Code Quality
-Both servers maintain high code quality standards:
+All servers maintain high code quality standards:
 - **✅ Linting**: `ruff check` and `ruff format`  
 - **🛡️ Type checking**: `mypy src/`
 - **🧪 Testing**: `pytest` with async support and coverage reporting
